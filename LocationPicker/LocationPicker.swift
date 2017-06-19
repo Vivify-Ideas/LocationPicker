@@ -74,7 +74,7 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
      
      `protocol LocationPickerDelegate`
      */
-    open var selectCompletion: ((LocationItem) -> Void)?
+    open var selectCompletion: ((LocationItem?) -> Void)?
     
     /**
      Completion closure executed after user finally pick a location.
@@ -930,7 +930,9 @@ extension LocationPicker: UISearchBarDelegate {
             searchResultLocations.removeAll()
             tableView.reloadData()
             closeMapView()
-            
+
+            selectCompletion?(nil)
+
             if let doneButtonItem = barButtonItems?.doneButtonItem {
                 doneButtonItem.isEnabled = false
             }
