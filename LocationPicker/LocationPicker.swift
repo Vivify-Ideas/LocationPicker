@@ -332,7 +332,7 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
     fileprivate let locationManager = CLLocationManager()
     private let geocoder = CLGeocoder()
     
-    var selectedLocationItem: LocationItem?
+    public var selectedLocationItem: LocationItem?
     fileprivate var searchResultLocations = [LocationItem]()
     
     fileprivate var alternativeLocationCount: Int {
