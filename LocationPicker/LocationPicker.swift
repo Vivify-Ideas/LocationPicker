@@ -252,6 +252,8 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
         /// Default coordinate to use when current location information is not available. If not set, none is used.
     open var defaultSearchCoordinate: CLLocationCoordinate2D?
     
+    /// Defines whether or not the map view will be shown.
+    open var isMapViewEnabled = true
     
     /// `mapView.zoomEnabled` will be set to this property's value after view is loaded. __Default__ is __`true`__
     open var isMapViewZoomEnabled = true
@@ -672,12 +674,15 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
     public func selectLocationItem(_ locationItem: LocationItem) {
         selectedLocationItem = locationItem
         searchBar.text = locationItem.name
-        if let coordinate = locationItem.coordinate {
-            showMapView(withCenter: coordinateObject(fromTuple: coordinate), distance: longitudinalDistance)
-        } else {
-            closeMapView()
+
+        if isMapViewEnabled {
+            if let coordinate = locationItem.coordinate {
+                showMapView(withCenter: coordinateObject(fromTuple: coordinate), distance: longitudinalDistance)
+            } else {
+                closeMapView()
+            }
         }
-        
+
         barButtonItems?.doneButtonItem.isEnabled = true
         locationDidSelect(locationItem: locationItem)
     }
