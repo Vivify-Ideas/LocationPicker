@@ -279,7 +279,9 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
      The default behavior is to not geocode any additional search result.
      */
     open var isForceReverseGeocoding = false
-    
+
+    /// If set to false the street will be excluded from MKPlacemark.
+    open var isStreetShowing = true
     
     /// `tableView.backgroundColor` is set to this property's value afte view is loaded. __Default__ is __`UIColor.whiteColor()`__
     open var tableViewBackgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -696,6 +698,16 @@ open class LocationPicker: UIViewController, UIGestureRecognizerDelegate {
             }
             guard let placemarks = placemarks else { return }
             var placemark = placemarks[0]
+
+            if !self.isStreetShowing {
+              var newAddressDictionary = placemark.addressDictionary
+              newAddressDictionary?["Street"] = nil
+              newAddressDictionary?["Name"] = newAddressDictionary?["City"] as? String
+
+              placemark = MKPlacemark(coordinate: location.coordinate,
+                                      addressDictionary: newAddressDictionary as? [String: NSObject])
+            }
+
             if !self.isRedirectToExactCoordinate {
                 placemark = MKPlacemark(coordinate: location.coordinate, addressDictionary: placemark.addressDictionary as? [String : NSObject])
             }
